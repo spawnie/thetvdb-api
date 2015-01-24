@@ -1,0 +1,19 @@
+{
+    "name": "choi/thetvdb-api",
+    "description": "TheTvDb API PHP Wrapper",
+    "require": {
+        "illuminate/support": "4.2.*@dev",
+        "guzzlehttp/guzzle": "~5.0"
+    },
+    "authors": [
+        {
+            "name": "Christian Choi",
+            "email": "krelle@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Choi\\TheTvDbApi\\": "src"
+        }
+    }
+}
