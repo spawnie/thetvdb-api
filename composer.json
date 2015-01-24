@@ -1,16 +1,17 @@
 {
     "name": "choi/thetvdb-api",
     "description": "TheTvDb API PHP Wrapper",
-    "require": {
-        "illuminate/support": "4.2.*@dev",
-        "guzzlehttp/guzzle": "~5.0"
-    },
+    "license": "MIT",
     "authors": [
         {
             "name": "Christian Choi",
             "email": "krelle@gmail.com"
         }
     ],
+    "require": {
+        "illuminate/support": "4.2.*@dev",
+        "guzzlehttp/guzzle": "~5.0"
+    },
     "autoload": {
         "psr-4": {
             "Choi\\TheTvDbApi\\": "src"
