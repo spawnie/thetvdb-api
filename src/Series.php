@@ -104,6 +104,9 @@ class Series {
 			$seasons[$data['season_number']][$data['episode_number']] = $data;
 		}
 
+		// Sort by season
+		ksort($seasons);
+
 		return $this->data = compact('series', 'seasons');
 	}
 
@@ -123,14 +126,17 @@ class Series {
 			$banners = [];
 			foreach($body->Banner as $banner)
 			{
-				$banners[] = new Banner($this->config, [
+				$season = (int) $banner->Season;
+				$type   = (string) $banner->BannerType;
+
+				$banners[$season][$type][] = new Banner($this->config, [
 					'id'             => (int) $banner->id,
 					'banner_path'    => (string) $banner->BannerPath,
-					'banner_type'    => (string) $banner->BannerType,
+					'banner_type'    => $type,
 					'banner_type2'   => (string) $banner->BannerType2,
 					'colors'         => $this->pipeStringToArray($banner->Colors),
 					'language'       => (string) $banner->Language,
-					'season'         => (int) $banner->Season,
+					'season'         => $season,
 					'rating'         => (float) $banner->Rating,
 					'rating_count'   => (int) $banner->RatingCount,
 					'series_name'    => (bool) ($banner->SeriesName == 'true'),
@@ -139,6 +145,9 @@ class Series {
 					'full_path'      => (string) $this->config->mirror.'/banners/'.$banner->BannerPath,
 				]);
 			}
+
+			// Sort banners by season
+			ksort($banners);
 			
 			$this->banners = new Collection($banners);
 		}
@@ -161,7 +170,7 @@ class Series {
 			'airs_time'      => (string) $data->Airs_Time,
 			'content_rating' => (string) $data->ContentRating,
 			'first_aired'    => (string) $data->First_Aired,
-			'genre'          => $this->pipeStringToArray($data->Genre),
+			'genres'         => $this->pipeStringToArray($data->Genre),
 			'imdb_id'        => (string) $data->IMDB_ID,
 			'language'       => (string) $data->Language,
 			'network'        => (string) $data->Network,
@@ -199,7 +208,7 @@ class Series {
 			'dvd_disc_id'             => (string) $data->DVD_discid,
 			'dvd_episode_number'      => (string) $data->DVD_episodenumber,
 			'dvd_season'              => (string) $data->DVD_season,
-			'director'                => (string) $data->Director,
+			'directors'               => $this->pipeStringToArray($data->Director),
 			'ep_img_flag'             => (int) $data->EpImgFlag,
 			'episode_name'            => (string) $data->EpisodeName,
 			'episode_number'          => (int) $data->EpisodeNumber,
@@ -212,7 +221,7 @@ class Series {
 			'rating'                  => (float) $data->Rating,
 			'rating_count'            => (int) $data->RatingCount,
 			'season_number'           => (int) $data->SeasonNumber,
-			'writer'                  => $this->pipeStringToArray($data->Writer),
+			'writers'                 => $this->pipeStringToArray($data->Writer),
 			'absolute_number'         => (string) $data->absolute_number,
 			'airs_after_season'       => (int) $data->airsafter_season,
 			'airs_before_episode'     => (string) $data->airsbefore_episode,
