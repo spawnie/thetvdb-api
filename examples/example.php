@@ -21,4 +21,7 @@ $base_details = $series->getBaseDetails();
 // Fetch full series details
 $full_details = $series->getFullDetails();
 
-dd($full_details);
+// Fetch series banners
+$banners = $series->getBanners();
+
+dd($banners);

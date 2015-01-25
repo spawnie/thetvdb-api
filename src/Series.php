@@ -1,6 +1,7 @@
 <?php namespace Choi\TheTvDbApi;
 
 use GuzzleHttp\Client;
+use Illuminate\Support\Collection;
 
 class Series {
 
@@ -24,6 +25,13 @@ class Series {
 	 * @var array
 	 */
 	private $data;
+
+	/**
+	 * Banners collection
+	 *
+	 * @var Illuminate\Support\Collection
+	 */
+	private $banners;
 
 	/**
 	 * Constructor
@@ -97,6 +105,45 @@ class Series {
 		}
 
 		return $this->data = compact('series', 'seasons');
+	}
+
+	public function getBanners()
+	{
+		if(is_null($this->banners))
+		{
+			$client   = new Client;
+			$response = $client->get(sprintf(
+				'%s/api/%s/series/%s/banners.xml',
+				$this->config->mirror,
+				$this->config->api_key,
+				$this->id
+			));
+			$body = $response->xml();
+
+			$banners = [];
+			foreach($body->Banner as $banner)
+			{
+				$banners[] = new Banner($this->config, [
+					'id'             => (int) $banner->id,
+					'banner_path'    => (string) $banner->BannerPath,
+					'banner_type'    => (string) $banner->BannerType,
+					'banner_type2'   => (string) $banner->BannerType2,
+					'colors'         => $this->pipeStringToArray($banner->Colors),
+					'language'       => (string) $banner->Language,
+					'season'         => (int) $banner->Season,
+					'rating'         => (float) $banner->Rating,
+					'rating_count'   => (int) $banner->RatingCount,
+					'series_name'    => (bool) ($banner->SeriesName == 'true'),
+					'thumbnail_path' => (string) $banner->ThumbnailPath,
+					'vignette_path'  => (string) $banner->VignettePath,
+					'full_path'      => (string) $this->config->mirror.'/banners/'.$banner->BannerPath,
+				]);
+			}
+			
+			$this->banners = new Collection($banners);
+		}
+
+		return $this->banners;
 	}
 
 	/**
