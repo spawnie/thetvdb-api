@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "illuminate/support": "4.2.*@dev",
+        "illuminate/support": "5.0.*@dev",
         "guzzlehttp/guzzle": "~5.0"
     },
     "autoload": {
